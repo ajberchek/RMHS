@@ -55,7 +55,7 @@ create table ServiceProvider
         s_contactInfo   VARCHAR (25)    NOT NULL
 );
 
-create table reviews
+create table Reviews
 (
         rv_reviewkey    INT     NOT NULL,
         rv_realtorkey   INT     NOT NULL,
@@ -65,13 +65,13 @@ create table reviews
 );
 
 
-create table manages
+create table Manages
 (
         m_housekey      INT     NOT NULL,
         m_realtor       INT     NOT NULL
 );
 
-create table services
+create table Services
 (
         sv_housekey     INT     NOT NULL,
         sv_providerkey  INT     NOT NULL

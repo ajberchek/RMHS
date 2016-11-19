@@ -3,6 +3,6 @@ INSERT INTO Manages (
                         m_realtor
                     )
                     VALUES (
-                        'm_housekey',
-                        'm_realtor'
+                        20,
+                        2
                     );

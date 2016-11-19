@@ -4,7 +4,7 @@ INSERT INTO Pictures (
                          p_name
                      )
                      VALUES (
-                         'p_pictureKey',
-                         'p_houseKey',
-                         'p_name'
+                         30,
+                         20,
+                         'PORCH.jpg'
                      );

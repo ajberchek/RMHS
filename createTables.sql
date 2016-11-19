@@ -45,7 +45,6 @@ create table House
         h_address       VARCHAR (25)    NOT NULL,
         h_location      INT  NOT NULL
 );
-
 create table ServiceProvider
 (
         s_providerKey   INT  NOT NULL,
@@ -54,7 +53,6 @@ create table ServiceProvider
         s_location      INT  NOT NULL,
         s_contactInfo   VARCHAR (25)    NOT NULL
 );
-
 create table Reviews
 (
         rv_reviewkey    INT     NOT NULL,
@@ -63,14 +61,11 @@ create table Reviews
         rv_rating       FLOAT   NULL,
         rv_comment      VARCHAR (25)    NULL
 );
-
-
 create table Manages
 (
         m_housekey      INT     NOT NULL,
         m_realtor       INT     NOT NULL
 );
-
 create table Services
 (
         sv_housekey     INT     NOT NULL,

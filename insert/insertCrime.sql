@@ -5,9 +5,9 @@ INSERT INTO CrimeRating (
                             c_crimetype
                         )
                         VALUES (
-                            'c_crimeKey',
-                            'c_location',
-                            'c_dangerLevel',
-                            'c_crimetype'
+                            20,
+                            95343,
+                            10,
+                            'SHOOTING'
                         );
 

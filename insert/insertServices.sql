@@ -3,7 +3,7 @@ INSERT INTO Services (
                          sv_providerkey
                      )
                      VALUES (
-                         'sv_housekey',
-                         'sv_providerkey'
+                         5,
+                         2
                      );
 

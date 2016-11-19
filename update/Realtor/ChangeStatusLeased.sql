@@ -1,3 +1,3 @@
 update House
 set h_sellStatus = 'L'
-where h_housekey = 100;
+where h_housekey = 1;

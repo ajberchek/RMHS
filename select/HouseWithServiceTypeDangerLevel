@@ -1,3 +1,3 @@
-select h_housekey, s_serviceType, c_dangerLevel
+select distinct h_housekey, s_serviceType, s_name,  c_dangerLevel
 from House, Services, ServiceProvider, CrimeRating
-where h_constructionyear between '1960' and '1980' and h_numRooms >= 3 and h_numBath >= 1 and h_price < 250000 and h_housekey = sv_housekey and sv_providerkey = s_providerkey and (s_name = 'COMCAST' or s_name = 'AT&T') and c_dangerLevel < 5;
+where h_constructionyear between '1960' and '1980' and h_numRooms >= 2 and h_numBath >= 1 and h_price < 490000 and h_housekey = sv_housekey and sv_providerkey = s_providerkey and (s_name = 'Comcast' or s_name = 'AT&T') and c_dangerLevel < 5;

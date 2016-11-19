@@ -1,0 +1,3 @@
+select distinct h_housekey, s_serviceType, s_name, c_dangerLevel, c_crimetype
+from House, CrimeRating, Services, ServiceProvider
+where h_location = c_location and sv_housekey = h_housekey and sv_providerkey = s_providerKey and h_location = s_location;

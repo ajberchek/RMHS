@@ -1,4 +1,4 @@
-SELECT sum(H.h_houseKey),H.h_location
+SELECT count(distinct H.h_houseKey),H.h_location
     FROM House as H
     WHERE H.h_price < 1000000 AND H.h_price > 0
         AND H.h_numRooms > 2

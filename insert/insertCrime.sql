@@ -8,6 +8,6 @@ INSERT INTO CrimeRating (
                             20,
                             95343,
                             10,
-                            'SHOOTING'
+                            'Robbery'
                         );
 

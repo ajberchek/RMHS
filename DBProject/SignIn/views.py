@@ -1,5 +1,5 @@
 from django import forms
-from django.http import HttpResponse
+from django.http import *
 from django.template import loader
 from django.shortcuts import render
 
@@ -12,8 +12,7 @@ def login(request):
     if request.method == 'POST':
         try:
             if('uname' in request.session):
-                html = "<h1>Already Logged In as " + str(request.session.get('uname')) + "</h1>"
-                return HttpResponse(html)
+                return HttpResponseRedirect("../Account")
 
 
             uname = request.POST.get('username',None)
@@ -25,15 +24,15 @@ def login(request):
             c.execute('SELECT * FROM Credentials WHERE c_credentialKey = ?',(uname,))
             row = c.fetchone()
 
-            html = "<h1>Username or Password are Invalid</h1>"
             if(row is not None):
-                (uname,pwdInDb,salt) = row
+                (uname,pwdInDb,salt,typeChoice) = row
                 if(bcrypt.hashpw(pwd.encode('UTF-8'),salt.encode('UTF-8')) == pwdInDb):
-                    html = "<h1>Password Matches, Logged In</h1>"
                     request.session['uname'] = uname
+                    request.session['type'] = typeChoice
+                    return HttpResponseRedirect("../Account")
 
             conn.close()
-            return HttpResponse(html)
+            return render(request, 'signInForm.html')
         except:
             #redirect back to index if possible
             return render(request, 'signInForm.html')

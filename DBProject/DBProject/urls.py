@@ -5,6 +5,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^home/', admin.site.urls),
     url(r'^SignIn/', include('SignIn.urls')),
-    url(r'^SignUp/', inWclude('SignUp.urls')),
+    url(r'^SignUp/', include('SignUp.urls')),
 
 ]

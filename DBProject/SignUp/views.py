@@ -39,4 +39,3 @@ def createAccount(request):
             return render(request, 'signUpForm.html')
     else:
         return render(request, 'signUpForm.html')
-        

@@ -1,0 +1,19 @@
+<div>
+	<h4>
+		<a style="text-align: right; align: right; float: right;" href="../../Logout/">Logout</a>
+	</h4>
+</div>
+<div>
+	<h1>
+		Houses for {{ realtorName }}
+	</h1>
+</div>
+<ul>
+	{% for House in house_list %}
+		<li>
+			<a href="../EditHouse?h_housekey={{ House.ID }}">
+				<img src={{ House.thumbnail }} style="width:256px;border:0;">
+			</a>
+		</li>
+	{% endfor %}
+</ul>

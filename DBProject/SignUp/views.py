@@ -14,6 +14,7 @@ def createAccount(request):
             uname = request.POST.get('username',None)
             pwd = request.POST.get('password',None)
             pwdVerify = request.POST.get('passwordVerify',None)
+            typeChoice = request.POST.get('type',None)
 
             conn = sqlite3.connect(os.path.join('RMHS.db'))
             c = conn.cursor()
@@ -28,9 +29,11 @@ def createAccount(request):
                 if(row is None):
                     salt = bcrypt.gensalt()
                     hashedPw = bcrypt.hashpw(pwd.encode('UTF-8'),salt)
-                    c.execute('INSERT INTO Credentials VALUES (?,?,?)',(uname,hashedPw,salt))
+                    c.execute('INSERT INTO Credentials VALUES (?,?,?,?)',(uname,hashedPw,salt,typeChoice))
                     html = "<h1>ADDED USER</h1>"
                     conn.commit()
+                    request.session['uname'] = uname
+                    request.session['type'] = typeChoice
 
             conn.close()
             return HttpResponse(html)

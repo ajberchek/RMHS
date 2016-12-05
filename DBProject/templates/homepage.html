@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+        <body>
+                <table>
+                <tr>
+                        <form method="GET" action="../SignIn/">
+                        {% csrf_token %}
+                        <td><button type="submit">SignIn</button></td>
+                        </form>
+                        <form method="GET" action="../SignUp/">
+                        {% csrf_token %}
+                        <td><button type="submit">SignUp</button></td>
+                        </form>
+                </tr>
+                </table>
+        </body>
+</html>

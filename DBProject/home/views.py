@@ -7,11 +7,14 @@ import os
 
 # Create your views here.
 def viewHome(request):
+
     html = ''
     conn = sqlite3.connect(os.path.join('RMHS.db'))
     c = conn.cursor()
 
-    for row in c.execute('SELECT p_name FROM House, Pictures where h_housekey = p_houseKey'):
-        html += '<img src = '+ str(row)[2:len(str(row))-3] +'height="42" width="42" </img>'
+    #for row in c.execute('SELECT p_name FROM House, Pictures where h_housekey = p_houseKey'):
+    #    html += '<img src = '+ str(row)[2:len(str(row))-3] +'height="42" width="42" </img>'
+    #
+    conn.close()
 
-    return HttpResponse(html)
+    return HttpResponse(render(request, 'homepage.html'))

@@ -1,0 +1,54 @@
+<div>
+	<h4>
+		<a style="text-align: right; align: right; float: right;" href="../../Logout/">Logout</a>
+	</h4>
+</div>
+
+<form method="POST" action="">
+{% csrf_token %}
+<label>Construction Year</label>
+<input type="text" name="ConstructionYear">
+<br>
+<label>Is This House Pet Friendly?</label>
+<br>
+<input type="radio" name = "PetFriendly" value="Y" checked>Pet Friendly<br>
+<input type="radio" name = "PetFriendly" value="N">Not Pet Friendly<br>
+<br>
+<label>Number of Bedrooms</label>
+<input type="text" name="NumRooms" >
+<br>
+<label>Number of Bathrooms</label>
+<input type="text" name="NumBath">
+<br>
+<label>Size of House In Sq Feet</label>
+<input type="text" name="HouseSize" >
+<br>
+<label>Appliances</label>
+<input type="text" name="Appliances" >
+<br>
+<label>Leasing or Selling</label>
+<br>
+<input type="radio" name = "SellStatus" value="S" checked>Selling<br>
+<input type="radio" name = "SellStatus" value="L">Leasing<br>
+<br>
+<label>Price</label>
+<input type="text" name="Price">
+<br>
+<label>Contains a Garage</label>
+<br>
+<input type="text" name="Garage" >
+<br>
+<label>House Description</label>
+<input type="textarea" name="Description" >
+<br>
+<label>Additional Information</label>
+<input type="textarea" name="AdditionalInfo" >
+<br>
+<label>Address</label>
+<input type="text" name="Address" >
+<br>
+<label>Location</label>
+<input type="text" name="Location">
+<br>
+<button type="submit">Submit</button>
+</form>

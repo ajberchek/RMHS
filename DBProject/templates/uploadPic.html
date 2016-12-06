@@ -1,0 +1,15 @@
+<div>
+	<h4>
+		<a style="text-align: right; align: right; float: right;" href="../../Logout/">Logout</a>
+	</h4>
+</div>
+<form method="POST" action="">
+{% csrf_token %}
+	<label>House Key Picture Corresponds To: </label>
+	<input type="text" name="HouseKey" value = {{ HouseKey }}>
+	<br>
+	<label>Picture URL: </label>
+	<input type="text" name="PictureURL">
+	<br>
+	<button type="submit">Add Picture</button>
+</form>

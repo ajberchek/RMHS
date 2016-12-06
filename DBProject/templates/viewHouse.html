@@ -1,0 +1,50 @@
+<div>
+	<h1>
+		Edit House: {{ house_id }}
+	</h1>
+</div>
+<ul>
+	{% for imgLink in Pictures %}
+		<li>
+			<img src="{{ imgLink }}" style="width:256px;border:0;">
+		</li>
+	{% endfor %}
+
+<h4>Construction Year: {{ ConstructionYear }}</h4>
+<br>
+{% if PetFriendly == "Y" %}
+	<h4>This house is pet friendly</h4>
+{% else %}
+	<h4>This house is not pet friendly</h4>
+{% endif %}
+<br>
+<h4>Number of Bedrooms: {{ NumRooms }}</h4>
+<br>
+<h4>Number of Bathrooms: {{ NumBath }}</h4>
+<br>
+<h4>Size of House In Sq Feet: {{ HouseSize }}</h4>
+<br>
+<h4>Appliances: {{ Appliances }}</h4>
+<br>
+{% if sellStatus == "S" %}
+	<h4>Realtor is Selling this house</h4>
+{% else %}
+	<h4>Realtor is Leasing this house</h4>
+{% endif %}
+<br>
+<h4>Price: {{ Price }}</h4>
+<br>
+{% if Garage == "Y" %}
+	<h4>This House Contains a Garage</h4>
+{% else %}
+	<h4>This House Contains a Garage</h4>
+{% endif %}
+<br>
+<h4>House Description: {{Description}}</h4>
+<br>
+<h4>Additional Information: {{ AdditionalInfo }}</h4>
+<br>
+<h4>Address: {{ Address }}</h4>
+<br>
+<h4>Location: {{ Location }}</h4>
+<br>

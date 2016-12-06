@@ -17,3 +17,7 @@
 		</li>
 	{% endfor %}
 </ul>
+<form method="GET" action="../CreateHouse">
+	{% csrf_token %}
+	<button type="submit">Create New House</button>
+</form>

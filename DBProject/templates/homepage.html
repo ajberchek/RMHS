@@ -6,16 +6,34 @@
                 <tr>
                         <form method="GET" action="../SignIn/">
                         {% csrf_token %}
-                        <td><button type="submit">SignIn</button></td>
+                        <button type="submit">SignIn</button>
                         </form>
                         <form method="GET" action="../SignUp/">
                         {% csrf_token %}
-                        <td><button type="submit">SignUp</button></td>
+                        <button type="submit">SignUp</button><br>
                         </form>
                         <form method="GET" action="../search/">
                         {% csrf_token %}
-                        <input type="search" placeholder="Search for houses"name="srh">
-                        <button type="submit">Search</button>
+                        <label>Price: </label>
+                        <input type="text" placeholder="Min" name="minPrice">
+                        <input type="text" placeholder="Max" name="maxPrice"><br>
+                        <label>Year: </label>
+                        <input type="text" placeholder="Build after" name = "ayear">
+                        <input type="text" placeholder="Build before" name = "byear"><br>
+                        <label>Rating: </label>
+                        <input type="text" placeholder="Lowest" name = "lstar">
+                        <input type="text" placeholder="Highest" name = "hstar">
+                        <br>
+                        <label>Rooms: </label>
+                        <input type="text" placeholder="min" name = "minroom">
+                        <input type="text" placeholder="max" name = "maxroom">
+                        <br>
+                        <label>Bathrooms: </label>
+                        <input type="text" placeholder="min" name = "minbthm">
+                        <input type="text" placeholder="max" name = "maxbthm">
+                        <br>
+                        <input type="reset" value="Reset">
+                        <button type="submit">Search</button><br>
 
                         </form>
 

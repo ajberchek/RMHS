@@ -10,6 +10,7 @@ import os
 # Create your views here.
 def login(request):
     if request.method == 'POST':
+        print("first")
         try:
             if('uname' in request.session):
                 return HttpResponseRedirect("../Account")
@@ -37,4 +38,5 @@ def login(request):
             #redirect back to index if possible
             return render(request, 'signInForm.html')
     else:
+        print("doesitgohere")
         return render(request, 'signInForm.html')

@@ -6,16 +6,21 @@
                 <tr>
                         <form method="GET" action="../SignIn/">
                         {% csrf_token %}
-                        <td><button type="submit">SignIn</button></td>
+                        <button type="submit">SignIn</button>
                         </form>
                         <form method="GET" action="../SignUp/">
                         {% csrf_token %}
-                        <td><button type="submit">SignUp</button></td>
+                        <button type="submit">SignUp</button><br>
                         </form>
                         <form method="GET" action="../search/">
                         {% csrf_token %}
-                        <input type="search" placeholder="Search for houses"name="srh">
-                        <button type="submit">Search</button>
+                        <input type="range" name = "price"><br>
+                        <input type="range" name = "year"><br>
+                        <input type="range" name = "rating"><br>
+                        <input type="range" name = "Rooms"><br>
+                        <input type="range" name = "bathrooms"><br>
+                        <input type="range" name = "price"><br>
+                        <button type="submit">Search</button><br>
 
                         </form>
 

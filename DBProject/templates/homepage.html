@@ -12,6 +12,13 @@
                         {% csrf_token %}
                         <td><button type="submit">SignUp</button></td>
                         </form>
+                        <form method="GET" action="../search/">
+                        {% csrf_token %}
+                        <input type="search" placeholder="Search for houses"name="srh">
+                        <button type="submit">Search</button>
+
+                        </form>
+
                 </tr>
                 </table>
         </body>

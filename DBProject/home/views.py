@@ -12,7 +12,7 @@ class House:
             self.thumbnail = mainPicURL
 
 def viewHome(request):
-    return viewHouse(request)
+    return render(request,'homepage.html')
 
 def viewHouse(request):
     if request.method == 'GET':

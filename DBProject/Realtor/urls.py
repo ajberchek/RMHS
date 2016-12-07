@@ -6,4 +6,5 @@ urlpatterns = [
         url(r'^EditHouse',views.editHouse),
         url(r'^AddPic',views.addPicture),
         url(r'^CreateHouse',views.addHouse),
+        url(r'^CreateRealtor',views.createRealtor),
 ]

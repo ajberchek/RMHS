@@ -21,6 +21,8 @@ def housePage(request):
 
         realtorCursor.execute('SELECT distinct r_realtorKey FROM Realtor WHERE r_credentialKey = ?',(request.session.get('uname'),))
         (realtorKey) = realtorCursor.fetchone()
+        if(realtorKey is None):
+            return HttpResponseRedirect("../createAccount")
 
         for row in houseCursor.execute('SELECT h_housekey FROM House,Manages WHERE h_housekey = m_housekey AND m_realtor = ?',realtorKey):
             (housekey) = row
@@ -217,3 +219,43 @@ def addPicture(request):
 
     raise Http404("Not a Realtor")
     
+
+def createRealtor(request):
+    if request.method == 'GET':
+        if('type' in request.session and request.session.get('type') == 'R'):
+            try:
+                return render(request=request,template_name='createRealtor.html')
+            except:
+                raise Http404()
+    elif request.method == 'POST':
+        if('type' in request.session and request.session.get('type') == 'R'):
+            conn = sqlite3.connect('RMHS.db')
+            realtorCursor = conn.cursor()
+
+            try:
+                realtorCursor.execute('SELECT max(r_realtorKey) FROM Realtor')
+                (RealtorKey) = realtorCursor.fetchone()
+                if(RealtorKey is None):
+                    RealtorKey = 0
+                else:
+                    RealtorKey = RealtorKey[0] + 1
+
+                CredentialKey = request.session.get('uname')
+                Description = request.POST.get('Description',None)
+                Location = request.POST.get('Location',None)
+                numSoldHouses = 0
+                ContactInfo = request.POST.get('ContactInfo',None)
+
+                realtorCursor.execute('INSERT INTO Realtor VALUES(?,?,?,?,?,?)',(RealtorKey,CredentialKey,Description,Location,numSoldHouses,ContactInfo))
+
+                conn.commit()
+                conn.close()
+
+                #redirect back ot the editing page
+                return HttpResponseRedirect("../Account")
+            except Exception as e:
+                print(e)
+                return HttpResponse("AHHHHHH!")
+
+        raise Http404("Not a Realtor")
+

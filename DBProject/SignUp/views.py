@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django import forms
-from django.http import HttpResponse
+from django.http import * 
 from django.template import loader
 
 import sqlite3
@@ -34,9 +34,13 @@ def createAccount(request):
                     conn.commit()
                     request.session['uname'] = uname
                     request.session['type'] = typeChoice
+                    conn.close()
+                    return HttpResponseRedirect("../../Realtor/CreateRealtor")
 
             conn.close()
-            return HttpResponse(html)
+            
+
+            return HttpResponseRedirect("../Account/")
         except:
             #redirect back to index if possible
             return render(request, 'signUpForm.html')

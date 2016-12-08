@@ -4,17 +4,9 @@
         <body>
                 <table>
                 <tr>
-                        <form method="GET" action="../SignIn">
+                        <form method="GET" action="../search/">
                         {% csrf_token %}
-                        <button type="submit">SignIn</button>
-                        </form>
-                        <form method="GET" action="../SignUp">
-                        {% csrf_token %}
-                        <button type="submit">SignUp</button><br>
-                        </form>
-                        <form method="GET" action="../rsearch/">
-                        {% csrf_token %}
-                        <!--<label>Price: </label>
+                        <label>Price: </label>
                         <input type="text" placeholder="Min" name="minPrice">
                         <input type="text" placeholder="Max" name="maxPrice"><br>
                         <label>Year: </label>
@@ -32,7 +24,7 @@
                         <input type="text" placeholder="min" name = "minbthm">
                         <input type="text" placeholder="max" name = "maxbthm">
                         <br>
-                        <input type="reset" value="Reset"> -->
+                        <input type="reset" value="Reset">
                         <button type="submit">Search</button><br>
 
                         </form>

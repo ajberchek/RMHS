@@ -12,6 +12,10 @@ class House:
             self.thumbnail = mainPicURL
 
 def viewHome(request):
+    if('uname' in request.session):
+        html = "<form method=\"GET\" action=\"../rsearch/\">"
+        html += "<button type=\"submit\">Search</button><br></form>"
+        return HttpResponse(html)
     return render(request,'homepage.html')
 
 def viewHouse(request):

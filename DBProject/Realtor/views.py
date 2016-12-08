@@ -12,17 +12,29 @@ class House:
             self.thumbnail = mainPicURL
 
 def housePage(request):
+    uname = ""
+    realtorKey = ""
+    isRealtor = False
     if('type' in request.session and request.session.get('type') == 'R'):
+        isRealtor = True
+        uname = request.session.get('uname')
+
+    if((request.method == 'GET' and 'r_realtorkey' in request.GET)):
+        isRealtor = False
+        realtorKey = (request.GET.get('r_realtorkey'),)
+
+    if(len(realtorKey) > 0 or len(uname) > 0):
         listOfHouses = []
         conn = sqlite3.connect('RMHS.db')
         realtorCursor = conn.cursor()
         houseCursor = conn.cursor()
         picCursor = conn.cursor()
 
-        realtorCursor.execute('SELECT distinct r_realtorKey FROM Realtor WHERE r_credentialKey = ?',(request.session.get('uname'),))
-        (realtorKey) = realtorCursor.fetchone()
-        if(realtorKey is None):
-            return HttpResponseRedirect("../createAccount")
+        if(isRealtor):
+            realtorCursor.execute('SELECT distinct r_realtorKey FROM Realtor WHERE r_credentialKey = ?',(request.session.get('uname'),))
+            (realtorKey) = realtorCursor.fetchone()
+            if(realtorKey is None):
+                return HttpResponseRedirect("../createAccount")
 
         for row in houseCursor.execute('SELECT h_housekey FROM House,Manages WHERE h_housekey = m_housekey AND m_realtor = ?',realtorKey):
             (housekey) = row
@@ -35,9 +47,47 @@ def housePage(request):
             h = House(housekey[0],picUrl)
             listOfHouses.append(h)
 
-        cont = {'realtorName':request.session.get('uname',None),'house_list':listOfHouses}
+        realtorKey = realtorKey[0]
+
+        print(len(listOfHouses))
+        print(isRealtor)
+        print(realtorKey)
+
+        cont = {'realtorName':realtorKey,'house_list':listOfHouses,'isRealtor':isRealtor}
         return render(context=cont,request=request,template_name='realtorHouses.html')
     raise Http404("Not a Realtor")
+
+def showRealtor(request):
+    if(request.method == 'GET' and 'r_realtorkey' in request.GET):
+        realtorKey = request.GET.get('r_realtorkey')
+        conn = sqlite3.connect('RMHS.db')
+        realtorCursor = conn.cursor()
+
+        realtorCursor.execute('SELECT * FROM Realtor WHERE r_realtorKey = ?',(realtorKey,))
+        realtor = realtorCursor.fetchone()
+        if(realtor is not None):
+            Description = realtor[2]
+            Location = realtor[3]
+            ContactInfo = realtor[5]
+            conn.close()
+            cont = {'RealtorKey':realtorKey,'Description':Description,'Location':Location,'ContactInfo':ContactInfo}
+            return render(context=cont,request=request,template_name='DisplayRealtor.html')
+
+    return Http404("Invalid Realtor Key")
+
+def allRealtors(request):
+    listOfRealtors = []
+    conn = sqlite3.connect('RMHS.db')
+    realtorCursor = conn.cursor()
+
+    for row in realtorCursor.execute('SELECT r_realtorKey FROM Realtor'):
+        listOfRealtors.append(row[0])
+
+    cont = {'realtor_list':listOfRealtors}
+    return render(context=cont,request=request,template_name='realtors.html')
+
+
+
 
 def editHouse(request):
     if request.method == 'GET':
@@ -233,20 +283,24 @@ def createRealtor(request):
             realtorCursor = conn.cursor()
 
             try:
-                realtorCursor.execute('SELECT max(r_realtorKey) FROM Realtor')
-                (RealtorKey) = realtorCursor.fetchone()
-                if(RealtorKey is None):
-                    RealtorKey = 0
-                else:
-                    RealtorKey = RealtorKey[0] + 1
-
+                RealtorName = request.POST.get('RealtorName',None)
                 CredentialKey = request.session.get('uname')
+                RealtorName = request.POST.get('RealtorName')
                 Description = request.POST.get('Description',None)
                 Location = request.POST.get('Location',None)
                 numSoldHouses = 0
                 ContactInfo = request.POST.get('ContactInfo',None)
 
-                realtorCursor.execute('INSERT INTO Realtor VALUES(?,?,?,?,?,?)',(RealtorKey,CredentialKey,Description,Location,numSoldHouses,ContactInfo))
+                if(RealtorName is None or len(RealtorName) == 0):
+                    return HttpResponseRedirect("")
+
+                realtorCursor.execute('SELECT * FROM Realtor WHERE r_realtorKey=? OR r_credentialKey=?',(RealtorName,CredentialKey))
+                if(realtorCursor.fetchone() is not None):
+                    #Realtor exists already
+                    return Http404("<h6>User is already in charge of a realtor, or realtor name is taken, go back and try again</h6>")
+
+                
+                realtorCursor.execute('INSERT INTO Realtor VALUES(?,?,?,?,?,?)',(RealtorName,CredentialKey,Description,Location,numSoldHouses,ContactInfo))
 
                 conn.commit()
                 conn.close()
@@ -255,7 +309,58 @@ def createRealtor(request):
                 return HttpResponseRedirect("../Account")
             except Exception as e:
                 print(e)
-                return HttpResponse("AHHHHHH!")
+                return HttpResponse("<h6>Please go back and enter all data after having signed in as a realtor")
 
         raise Http404("Not a Realtor")
+
+def review(request):
+    if('uname' not in request.session):
+        return Http404("Need to be logged in to write a review")
+    if(request.method == 'GET' and 'r_realtorkey' in request.GET):
+        cont = {'uname':request.session.get('uname'),'RealtorName':request.GET.get('r_realtorkey')}
+        return render(context=cont,request=request,template_name='review.html')
+    elif(request.method == 'POST'):
+        
+        try:
+            Rating = int(request.POST.get('Rating',None))
+            Comment = request.POST.get('Comment',None)
+            RealtorKey = request.POST.get('RealtorKey',None)
+            Reviewer = request.session.get('uname')
+
+
+            conn = sqlite3.connect('RMHS.db')
+            reviewCursor = conn.cursor()
+
+            reviewCursor.execute('SELECT max(rv_reviewkey) FROM Reviews')
+            (ReviewKey) = reviewCursor.fetchone()
+            if(ReviewKey is None):
+                ReviewKey = 0
+            else:
+                ReviewKey = ReviewKey[0] + 1
+
+            print("hi")
+            print(RealtorKey)
+
+            reviewCursor.execute('INSERT INTO Reviews VALUES(?,?,?,?,?)',(ReviewKey,RealtorKey,Reviewer,Rating,Comment))
+            conn.commit()
+            conn.close()
+
+            return HttpResponseRedirect("ShowRealtor?r_realtorkey=" + str(RealtorKey))
+
+        except:
+            return Http404("User entered data wrong, go back and try again")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

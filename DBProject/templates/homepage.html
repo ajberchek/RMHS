@@ -4,15 +4,15 @@
         <body>
                 <table>
                 <tr>
-                        <form method="GET" action="../SignIn/">
+                        <form method="GET" action="../SignIn">
                         {% csrf_token %}
                         <button type="submit">SignIn</button>
                         </form>
-                        <form method="GET" action="../SignUp/">
+                        <form method="GET" action="../SignUp">
                         {% csrf_token %}
                         <button type="submit">SignUp</button><br>
                         </form>
-                        <form method="GET" action="../search/">
+                        <form method="GET" action="../search">
                         {% csrf_token %}
                         <label>Price: </label>
                         <input type="text" placeholder="Min" name="minPrice">

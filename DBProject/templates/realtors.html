@@ -1,0 +1,19 @@
+<div>
+
+
+	<h4 style="text-align: right; alight; right; float: right;">
+		<a href="../../home">Home</a> 
+	</h4>
+</div>
+<div>
+	<h1>
+		Realtors
+	</h1>
+</div>
+<ul>
+	{% for Realtor in realtor_list %}
+		<li>
+			<a href="ShowRealtor?r_realtorkey={{ Realtor }}">{{ Realtor }}</a>
+		</li>
+	{% endfor %}
+</ul>

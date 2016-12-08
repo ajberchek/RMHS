@@ -1,11 +1,21 @@
 <div>
+
 	<h4>
-		<a style="text-align: right; align: right; float: right;" href="../../Logout/">Logout</a>
+		<style="text-align: right; alight; right; float: right;">
+	                <a href="../../home">Home</a> 
+			<a href="../../Logout/">Logout</a>
+		</style>
 	</h4>
+</div>
+<div>
+	<h5>Create Realtor</h5>
 </div>
 
 <form method="POST" action="">
 {% csrf_token %}
+<label>Realtor Name</label>
+<input type="text" name="RealtorName">
+<br>
 <label>Description</label>
 <input type="text" name="Description">
 <br>

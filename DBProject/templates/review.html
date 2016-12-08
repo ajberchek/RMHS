@@ -1,0 +1,19 @@
+<div>
+	<h4 style="text-align: right; alight; right; float: right;">
+		<a href="../../home">Home</a> 
+		<a href="../../Logout/">Logout</a>
+	</h4>
+</div>
+
+<form method="POST" action="">
+{% csrf_token %}
+	<h5>Logged in as {{ uname }}. writing a review for {{ RealtorName }}</h5>
+	<input type="hidden" name="RealtorKey" value="{{ RealtorName }}">
+	<label>Rating(0-5): </label>
+	<input type="text" name="Rating">
+	<br>
+	<label>Comment: </label>
+	<textarea name="Comment" rows="10" cols="30"></textarea>
+	<br>
+	<button type="submit">Submit Review</button>
+</form>

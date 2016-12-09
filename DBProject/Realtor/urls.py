@@ -9,5 +9,6 @@ urlpatterns = [
         url(r'^CreateRealtor',views.createRealtor),
         url(r'^ShowRealtor',views.showRealtor),
         url(r'^Review',views.review),
+        url(r'^DeleteHouse',views.DeleteHouse),
         url(r'^$',views.allRealtors),
 ]

@@ -1,8 +1,19 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
 <div>
 	
 	<h4 style="text-align: right; alight; right; float: right;">
 		<a href="../../home">Home</a> 
 		<a href="../../Logout/">Logout</a>
+		<a href="../../Account/">Account</a>
 	</h4>
 </div>
 <div>
@@ -66,13 +77,19 @@
 <br>
 <label>Contains a Garage</label>
 <br>
-<input type="text" name="Garage" value = "{{ Garage }}">
+{% if Garage == "Y" %}
+	<input type="radio" name = "Garage" value="Y" checked>Contains a Garage<br>
+	<input type="radio" name = "Garage" value="N">Does not Contain a Garage<br>
+{% else %}
+	<input type="radio" name = "Garage" value="Y">Contains a Garage<br>
+	<input type="radio" name = "Garage" value="N"checked>Does not Contain a Garage<br>
+{% endif %}
 <br>
 <label>House Description</label>
-<input type="textarea" name="Description" value = "{{ Description }}">
+<textarea name="Description" value = "{{ Description }}"></textarea>
 <br>
 <label>Additional Information</label>
-<input type="textarea" name="AdditionalInfo" value = "{{ AdditionalInfo }}">
+<textarea name="AdditionalInfo" value = "{{ AdditionalInfo }}"></textarea>
 <br>
 <label>Address</label>
 <input type="text" name="Address" value = "{{ Address }}">
@@ -81,4 +98,9 @@
 <input type="text" name="Location" value = "{{ Location }}">
 <br>
 <button type="submit">Submit</button>
+</form>
+<form method="POST" action="DeleteHouse">
+	{% csrf_token %}
+	<input type="hidden" name="HouseKey" value="{{ house_id }}">
+	<button type="submit">Delete House</button>
 </form>

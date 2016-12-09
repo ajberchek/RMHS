@@ -34,7 +34,7 @@ def housePage(request):
             realtorCursor.execute('SELECT distinct r_realtorKey FROM Realtor WHERE r_credentialKey = ?',(request.session.get('uname'),))
             (realtorKey) = realtorCursor.fetchone()
             if(realtorKey is None):
-                return HttpResponseRedirect("../createAccount")
+                return HttpResponseRedirect("../CreateRealtor")
 
         for row in houseCursor.execute('SELECT h_housekey FROM House,Manages WHERE h_housekey = m_housekey AND m_realtor = ?',realtorKey):
             (housekey) = row
@@ -102,6 +102,44 @@ def allRealtors(request):
 
     cont = {'realtor_list':listOfRealtors}
     return render(context=cont,request=request,template_name='realtors.html')
+
+def DeleteHouse(request):
+    if request.method == 'POST':
+        if('type' in request.session and request.session.get('type') == 'R'):
+            conn = sqlite3.connect('RMHS.db')
+            houseCursor = conn.cursor()
+            picCursor = conn.cursor()
+            realtorCursor = conn.cursor()
+            managesCursor = conn.cursor()
+            servicesCursor = conn.cursor()
+
+            try:
+                HouseKey = request.POST.get('HouseKey',None)
+
+
+                #used to verify a realtor has permissions for this house
+                realtorCursor.execute('SELECT distinct r_realtorKey FROM Realtor WHERE r_credentialKey = ?',(request.session.get('uname'),))
+                realtorKey = realtorCursor.fetchone()[0]
+                houseCursor.execute('SELECT h_housekey FROM House,Manages,Realtor WHERE h_housekey=? AND h_housekey=m_housekey AND m_realtor=?',(HouseKey,realtorKey))
+                realtorOwnedHouseKey = houseCursor.fetchone()
+
+                if(realtorOwnedHouseKey is not None):
+                    print("Access Granted")
+                    #Since the realtor has edit permissions for this house, then we can edit it safely
+                    houseCursor.execute('DELETE FROM House WHERE h_housekey=?',(HouseKey,))
+                    picCursor.execute('DELETE FROM Pictures WHERE p_houseKey=?',(HouseKey,))
+                    managesCursor.execute('DELETE FROM Manages WHERE m_housekey=?',(HouseKey,))
+                    servicesCursor.execute('DELETE FROM Services WHERE sv_housekey=?',(HouseKey,))
+                    conn.commit()
+                    conn.close()
+
+                #redirect back to the Realtor Houses Page
+                return HttpResponseRedirect("Houses")
+            except Exception as e:
+                print(e)
+                return HttpResponseRedirect("Houses")
+
+        raise Http404("Not a Realtor")
 
 
 
@@ -178,7 +216,7 @@ def editHouse(request):
                     conn.close()
 
                 #redirect back ot the editing page
-                return HttpResponseRedirect("EditHouse?h_housekey=" + str(HouseKey))
+                return HttpResponseRedirect("Houses")
             except Exception as e:
                 print(e)
                 return HttpResponseRedirect("EditHouse?h_housekey=" + str(HouseKey))
@@ -340,7 +378,7 @@ def createRealtor(request):
 
 def review(request):
     if('uname' not in request.session):
-        return Http404("Need to be logged in to write a review")
+        raise Http404("Need to be logged in to write a review")
     if(request.method == 'GET' and 'r_realtorkey' in request.GET):
         cont = {'uname':request.session.get('uname'),'RealtorName':request.GET.get('r_realtorkey')}
         return render(context=cont,request=request,template_name='review.html')

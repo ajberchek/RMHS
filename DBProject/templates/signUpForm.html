@@ -1,3 +1,15 @@
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+
 <div>
 	<h4 style="text-align: right; alight; right; float: right;">
 		<a href="../home">Home</a> 
@@ -6,6 +18,8 @@
 
 <form method="POST" action="">
 {% csrf_token %}
+<h1>Sign Up Page</h1>
+<h2>NOTE: DO NOT USE PASSWORDS YOU USE ELSEWHERE, HTTPS IS NOT ENABLED</h2>
 <label>Username</label>
 <input type="text" name="username">
 <br>
@@ -18,8 +32,8 @@
 <br>
 <label>Type Of Account</label>
 <br>
-<input type="radio" name = "type" value="R" checked>Realtor<br>
-<input type="radio" name = "type" value="U">User<br>
-<input type="radio" name = "type" value="S">Service Provider<br>
-<button type="submit">Submit</button>
+<input type="radio" name = "type" value="R" checked>Realtor: Can Post Houses, manage them, etc...<br>
+<input type="radio" name = "type" value="U">User: Can write reviews of Realtors and search<br>
+<input type="radio" name = "type" value="S">Service Provider: Can advertise services to help house searchers find their dream home (plus dream utilities)<br>
+<button type="submit">Sign Up</button>
 </form>

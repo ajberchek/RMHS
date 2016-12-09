@@ -9,20 +9,20 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+
+<div>
+	        <h4 style="text-align: right; alight; right; float: right;">
+			<a href="../../Logout/">Logout</a>
+			<a href="../../Account/">Account</a>
+		</h4>
+</div>
+
 <html>
 
 	<h1>Realtor Based House Management Website</h1>
         <body>
                 <table>
                 <tr>
-                        <form method="GET" action="../SignIn">
-                        {% csrf_token %}
-                        <button type="submit">SignIn</button>
-                        </form>
-                        <form method="GET" action="../SignUp">
-                        {% csrf_token %}
-                        <button type="submit">SignUp</button><br>
-                        </form>
 			<form method="GET" action="../Realtor">
                         {% csrf_token %}
                         <button type="submit">View Realtors</button><br>

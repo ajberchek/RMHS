@@ -87,6 +87,14 @@ def searchQ(request):
 
                         count = 0
                         html = "<a style=\"text-align: right; align: right; float: right;\" href=\"../home/\">Home</a>"
+
+
+                        html += "<!-- Latest compiled and minified CSS --><link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\"><!-- Optional theme --><link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\"><!-- Latest compiled and minified JavaScript --><script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>"
+
+
+                        html += "<h1>Search Results(Click Picture For More Details):</h1>"
+
+
                         for row in c.execute('SELECT distinct h_housekey,p_name FROM House as H, Pictures ' +
                                             'Where p_name in (SELECT p_name ' +
                                                             'FROM House, Pictures, Realtor, Manages, Reviews ' +
@@ -103,7 +111,7 @@ def searchQ(request):
                                                             'and h_numRooms >= ? and h_numRooms <= ? ' +
                                                             'and h_numBath >= ? and ' +
                                                             'h_numBath <= ? LIMIT 1)',(minPrice,maxPrice,ayear, byear, lstar, hstar, minroom, maxroom, minbthm, maxbthm)):
-                            html += "<a href=../home/ViewHouse?h_housekey=" + str(row[0]) + "><img src = \""+ str(row[1]) +"\" height=\"50\" width=\"50\" </img><br></a>"
+                            html += "<li><a href=../home/ViewHouse?h_housekey=" + str(row[0]) + "><img src = \""+ str(row[1]) +"\" height=\"256\" </img><br></a></li>"
                             count += 1
 
                         if(count == 0):

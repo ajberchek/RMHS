@@ -60,8 +60,8 @@ def CreateServiceProvder(request):
                 print(e)
                 return HttpResponse("<h6>Please go back and enter all data after having signed in as a Service Provider")
 
-        return Http404("Not a Service Provider")
-    return Http404("")
+        raise Http404("Not a Service Provider")
+    raise Http404("")
 
 def ViewServices(request):
     if(request.method == 'GET'):
@@ -75,11 +75,13 @@ def ViewServices(request):
             html = ""
             for SP in spCursor.execute('SELECT s_name,s_ServiceType,s_providerKey FROM ServiceProvider WHERE s_credentialKey=?',(CredentialKey,)):
                 if(len(html) == 0):
-                    html = "<h2>Services Managed By: " + str(CredentialKey) + "</h2>"
+                    html = "<a href=\"../home\">Home</a><a href=\"../Logout\"> Logout</a>"
+                    html += "<h2>Services Managed By: " + str(CredentialKey) + "</h2>"
                 html += "<li><h4><a href=\"ViewService?s_providerKey=" + str(SP[2]) + "\">" + str(SP[0]) + ": " + str(SP[1]) + "</a></h4></li>"
 
             if(len(html) == 0):
-                html = "<h6>No Services Managed By: " + str(CredentialKey) + "</h6>"
+                html = "<a href=\"../home\">Home</a><a href=\"../Logout\">Logout</a>"
+                html += "<h6>No Services Managed By: " + str(CredentialKey) + "</h6>"
 
             if('type' in request.session and request.session.get('type') == 'S'):
                 html += "<form method=\"GET\" action=\"CreateServiceProvider\"><button type=\"submit\">Add Service</button></form>"
@@ -88,7 +90,7 @@ def ViewServices(request):
         except Exception as e:
             print(e)
             return HttpResponse(html)
-    return Http404()
+    raise Http404()
 
 def ViewService(request):
     if(request.method == 'GET'):
@@ -101,7 +103,7 @@ def ViewService(request):
             spCursor.execute('SELECT * FROM ServiceProvider WHERE s_providerKey=?',(ProviderKey,))
             (spData) = spCursor.fetchone()
             if(spData is None):
-                return Http404("Invalid Service Provider Name")
+                raise Http404("Invalid Service Provider Name")
             else:
                 ServiceProviderName = spData[1]
                 ServiceType = spData[2]
@@ -112,6 +114,6 @@ def ViewService(request):
                 return render(context=cont,request=request,template_name="viewService.html")
         except Exception as e:
             print(e)
-            return Http404("")
+            raise Http404("")
 
-    return Http404("")
+    raise Http404("")

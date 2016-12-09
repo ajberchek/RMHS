@@ -19,6 +19,7 @@ def checkFl(som):
         return 0
 
 def searchQ(request):
+    zipCode = request.GET.get('zipcode', None)
     minPrice = request.GET.get('minPrice', None)
     maxPrice = request.GET.get('maxPrice', None)
     ayear = request.GET.get('ayear', None)
@@ -42,7 +43,7 @@ def searchQ(request):
     if(len(byear) == 0):
         byear = 99999999
     if(len(lstar) == 0):
-        lstar = 0
+        lstar = -5
     if(len(hstar) == 0):
         hstar = 5
     if(len(minroom) == 0):
@@ -93,26 +94,47 @@ def searchQ(request):
 
 
                         html += "<h1>Search Results(Click Picture For More Details):</h1>"
-
-
-                        for row in c.execute('SELECT distinct h_housekey,p_name FROM House as H, Pictures ' +
-                                            'Where p_name in (SELECT p_name ' +
-                                                            'FROM House, Pictures, Realtor, Manages, Reviews ' +
-                                                            'WHERE H.h_housekey = h_housekey and ' +
-                                                            'h_housekey = p_houseKey and r_realtorKey = m_realtor ' +
-                                                            'and r_realtorKey = rv_realtorkey and m_housekey = h_housekey ' +
-                                                            'and h_price >= ? and h_price <= ? and h_constructionyear >= ? ' +
-                                                            'and h_constructionyear <= ? and ? <= (SELECT avg(rv2.rv_rating) ' +
-                                                                'FROM Reviews as rv2 ' +
-                                                                'WHERE rv2.rv_realtorkey = r_realtorKey) ' +
-                                                            'and ? >= (SELECT avg(rv2.rv_rating) ' +
+                        if(len(zipCode) != 0):
+                            zipCode = int(zipCode)
+                            for row in c.execute('SELECT distinct h_housekey,p_name FROM House as H, Pictures ' +
+                                                'Where H.h_location = ? and p_name in (SELECT p_name ' +
+                                                                'FROM House, Pictures, Realtor, Manages, Reviews ' +
+                                                                'WHERE H.h_housekey = h_housekey and ' +
+                                                                'h_housekey = p_houseKey and r_realtorKey = m_realtor ' +
+                                                                'and r_realtorKey = rv_realtorkey and m_housekey = h_housekey ' +
+                                                                'and h_price >= ? and h_price <= ? and h_constructionyear >= ? ' +
+                                                                'and h_constructionyear <= ? and ? <= (SELECT avg(rv2.rv_rating) ' +
                                                                     'FROM Reviews as rv2 ' +
                                                                     'WHERE rv2.rv_realtorkey = r_realtorKey) ' +
-                                                            'and h_numRooms >= ? and h_numRooms <= ? ' +
-                                                            'and h_numBath >= ? and ' +
-                                                            'h_numBath <= ? LIMIT 1)',(minPrice,maxPrice,ayear, byear, lstar, hstar, minroom, maxroom, minbthm, maxbthm)):
-                            html += "<li><a href=../home/ViewHouse?h_housekey=" + str(row[0]) + "><img src = \""+ str(row[1]) +"\" height=\"256\" </img><br></a></li>"
-                            count += 1
+                                                                'and ? >= (SELECT avg(rv2.rv_rating) ' +
+                                                                        'FROM Reviews as rv2 ' +
+                                                                        'WHERE rv2.rv_realtorkey = r_realtorKey) ' +
+                                                                'and h_numRooms >= ? and h_numRooms <= ? ' +
+                                                                'and h_numBath >= ? and ' +
+                                                                'h_numBath <= ? LIMIT 1)',(zipCode, minPrice,maxPrice,ayear, byear, lstar, hstar, minroom, maxroom, minbthm, maxbthm)):
+                                print("hiaaaaa")
+                                print(row)
+                                html += "<li><a href=../home/ViewHouse?h_housekey=" + str(row[0]) + "><img src = \""+ str(row[1]) +"\" height=\"256\" </img><br></a></li>"
+                                count += 1
+                        else:
+                            for row in c.execute('SELECT distinct h_housekey,p_name FROM House as H, Pictures ' +
+                                                'Where p_name in (SELECT p_name ' +
+                                                                'FROM House, Pictures, Realtor, Manages, Reviews ' +
+                                                                'WHERE H.h_housekey = h_housekey and ' +
+                                                                'h_housekey = p_houseKey and r_realtorKey = m_realtor ' +
+                                                                'and r_realtorKey = rv_realtorkey and m_housekey = h_housekey ' +
+                                                                'and h_price >= ? and h_price <= ? and h_constructionyear >= ? ' +
+                                                                'and h_constructionyear <= ? and ? <= (SELECT avg(rv2.rv_rating) ' +
+                                                                    'FROM Reviews as rv2 ' +
+                                                                    'WHERE rv2.rv_realtorkey = r_realtorKey) ' +
+                                                                'and ? >= (SELECT avg(rv2.rv_rating) ' +
+                                                                        'FROM Reviews as rv2 ' +
+                                                                        'WHERE rv2.rv_realtorkey = r_realtorKey) ' +
+                                                                'and h_numRooms >= ? and h_numRooms <= ? ' +
+                                                                'and h_numBath >= ? and ' +
+                                                                'h_numBath <= ? LIMIT 1)',(minPrice,maxPrice,ayear, byear, lstar, hstar, minroom, maxroom, minbthm, maxbthm)):
+                                html += "<li><a href=../home/ViewHouse?h_housekey=" + str(row[0]) + "><img src = \""+ str(row[1]) +"\" height=\"256\" </img><br></a></li>"
+                                count += 1
 
                         if(count == 0):
                                 return render(request, "noresult.html")

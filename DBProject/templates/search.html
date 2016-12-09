@@ -21,6 +21,8 @@
                         <a style="text-align: right; align: right; float: right;" href="../home/">Home</a>
                         <form method="GET" action="../search/">
                         {% csrf_token %}
+			<label>ZipCode: </label>
+                        <input type="text" placeholder="ZipCode 5 Digits" name="zipcode"><br>
                         <label>Price: </label>
                         <input type="text" placeholder="Min" name="minPrice">
                         <input type="text" placeholder="Max" name="maxPrice"><br>

@@ -243,7 +243,10 @@ def addHouse(request):
                 if(HouseKey is None):
                     HouseKey = 0
                 else:
-                    HouseKey = HouseKey[0] + 1
+                    if(HouseKey[0] is None):
+                        HouseKey = 0
+                    else:
+                        HouseKey = HouseKey[0] + 1
                 ConstructionYear = request.POST.get('ConstructionYear',None)
                 PetFriendly = request.POST.get('PetFriendly',None)
                 NumRooms = request.POST.get('NumRooms',None)
@@ -309,7 +312,10 @@ def addPicture(request):
                     if(picKey is None):
                         picKey = 0;
                     else:
-                        picKey = int(picKey[0]) + 1
+                        if(picKey[0] is None):
+                            picKey = 0
+                        else:
+                            picKey = int(picKey[0]) + 1
                     picCursor.execute('INSERT INTO Pictures VALUES(?,?,?)',(picKey,HouseKey,PictureURL))
                     conn.commit()
                     conn.close()
@@ -360,7 +366,10 @@ def createRealtor(request):
                 if(ReviewKey is None):
                     ReviewKey = 0
                 else:
-                    ReviewKey = ReviewKey[0] + 1
+                    if(ReviewKey[0] is None):
+                        ReviewKey = 0
+                    else:
+                        ReviewKey = ReviewKey[0] + 1
 
                 revCursor.execute('INSERT INTO Reviews VALUES(?,?,?,?,?)',(ReviewKey,RealtorName,'ADMIN',-1,'Workaround and wont affect avg rating'))
                 realtorCursor.execute('INSERT INTO Realtor VALUES(?,?,?,?,?,?)',(RealtorName,CredentialKey,Description,Location,numSoldHouses,ContactInfo))
@@ -399,7 +408,10 @@ def review(request):
             if(ReviewKey is None):
                 ReviewKey = 0
             else:
-                ReviewKey = ReviewKey[0] + 1
+                if(ReviewKey[0] is None):
+                    ReviewKey = 0
+                else:
+                    ReviewKey = ReviewKey[0] + 1
 
             print("hi")
             print(RealtorKey)

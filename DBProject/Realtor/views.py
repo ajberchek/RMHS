@@ -236,6 +236,7 @@ def addHouse(request):
             houseCursor = conn.cursor()
             realtorCursor = conn.cursor()
             managesCursor = conn.cursor()
+            sCursor = conn.cursor()
 
             try:
                 houseCursor.execute('SELECT max(h_housekey) FROM House')
@@ -265,6 +266,8 @@ def addHouse(request):
                 realtorKey = realtorCursor.fetchone()[0]
                 houseCursor.execute('INSERT INTO House VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',(HouseKey,ConstructionYear,PetFriendly,NumRooms,NumBath,HouseSize,Appliances,SellStatus,Price,Garage,Description,AdditionalInfo,Address,Location))
                 managesCursor.execute('INSERT INTO Manages VALUES(?,?)',(HouseKey,realtorKey))
+                sCursor.execute('INSERT INTO Services (sv_housekey,sv_providerkey) SELECT h_housekey,s_providerKey FROM House,ServiceProvider WHERE h_housekey=? AND h_location=s_location',(HouseKey,))
+                print("executed")
 
                 conn.commit()
                 conn.close()

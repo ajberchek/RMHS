@@ -423,7 +423,7 @@ def review(request):
             return HttpResponseRedirect("ShowRealtor?r_realtorkey=" + str(RealtorKey))
 
         except:
-            return Http404("User entered data wrong, go back and try again")
+            raise Http404("User entered data wrong, go back and try again")
 
 
 

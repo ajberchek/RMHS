@@ -42,7 +42,10 @@ def CreateServiceProvder(request):
                 if(ProviderKey is None):
                     ProviderKey = 0
                 else:
-                    ProviderKey = ProviderKey[0] + 1
+                    if(ProviderKey[0] is None):
+                        ProviderKey = 0
+                    else:
+                        ProviderKey = ProviderKey[0] + 1
                 
                 spCursor.execute('INSERT INTO ServiceProvider VALUES(?,?,?,?,?,?)',(ProviderKey,ServiceProviderName,ServiceType,Location,ContactInfo,CredentialKey))
 

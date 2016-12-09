@@ -25,7 +25,7 @@ SECRET_KEY = '!k^58v)9@*rob^#8h=8q6c$ehfvl-^t19qa=(@srjp2(&k8het'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["db.amorgan.xyz"]
 
 
 # Application definition

@@ -1,7 +1,9 @@
 from django.conf.urls import include, url
 from django.contrib import admin
+from home import views
 
 urlpatterns = [
+    url(r'^$',views.viewHome),
     url(r'^admin/', admin.site.urls),
     url(r'^home/', include('home.urls')),
     url(r'^search/', include('search.urls')),

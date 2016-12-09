@@ -1,6 +1,9 @@
 <div>
-	<h4>
-		<a style="text-align: right; align: right; float: right;" href="../../Logout/">Logout</a>
+
+
+	<h4 style="text-align: right; alight; right; float: right;">
+		<a href="../../home">Home</a> 
+		<a href="../../Logout/">Logout</a>
 	</h4>
 </div>
 <div>
@@ -11,13 +14,19 @@
 <ul>
 	{% for House in house_list %}
 		<li>
+			{% if isRealtor %}
 			<a href="../EditHouse?h_housekey={{ House.ID }}">
+			{% else %}
+			<a href="../../home/ViewHouse?h_housekey={{ House.ID }}">
+			{% endif %}
 				<img src={{ House.thumbnail }} style="width:256px;border:0;">
 			</a>
 		</li>
 	{% endfor %}
 </ul>
-<form method="GET" action="../CreateHouse">
-	{% csrf_token %}
-	<button type="submit">Create New House</button>
-</form>
+{% if isRealtor %}
+	<form method="GET" action="../CreateHouse">
+		{% csrf_token %}
+		<button type="submit">Create New House</button>
+	</form>
+{% endif %}

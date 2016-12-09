@@ -11,6 +11,12 @@ def checkInt(som):
         return 1
     except ValueError:
         return 0
+def checkFl(som):
+    try:
+        float(som)
+        return 1
+    except ValueError:
+        return 0
 
 def searchQ(request):
     minPrice = request.GET.get('minPrice', None)
@@ -24,8 +30,8 @@ def searchQ(request):
     minbthm = request.GET.get('minbthm', None)
     maxbthm = request.GET.get('maxbthm', None)
     #print("yest"+minPrice)
-    if(len(minPrice) == 0 and len(maxPrice) == 0 and  len(ayear) == 0 and len(byear) == 0 and len(lstar) == 0 and  len(hstar) == 0 and len(minroom) == 0 and len(maxroom) == 0 and len(minbthm) == 0 and len(maxbthm) == 0):
-        return render(request, "noresult.html")
+    #if(len(minPrice) == 0 and len(maxPrice) == 0 and  len(ayear) == 0 and len(byear) == 0 and len(lstar) == 0 and  len(hstar) == 0 and len(minroom) == 0 and len(maxroom) == 0 and len(minbthm) == 0 and len(maxbthm) == 0):
+    #    return render(request, "noresult.html")
 
     if(len(minPrice) == 0):
         minPrice = 0
@@ -47,12 +53,12 @@ def searchQ(request):
         minbthm = 0
     if(len(maxbthm) == 0):
         maxbthm = 99999999
-    if(checkInt(minroom) == 0 or checkInt(maxPrice) == 0 or checkInt(ayear) == 0 or checkInt(byear) == 0 or checkInt(lstar) == 0 or checkInt(hstar) == 0 or checkInt(minroom) == 0 or checkInt(maxroom) == 0 or checkInt(minbthm) == 0 or  checkInt(maxbthm) == 0):
+    if(checkInt(minroom) == 0 or checkInt(maxPrice) == 0 or checkInt(ayear) == 0 or checkInt(byear) == 0 or checkFl(lstar) == 0 or checkFl(hstar) == 0 or checkInt(minroom) == 0 or checkInt(maxroom) == 0 or checkInt(minbthm) == 0 or  checkInt(maxbthm) == 0):
         return render(request, "noresult.html")
 
     if(int(minPrice) <= int(maxPrice)):
         if(int(ayear) <= int(byear)):
-            if(int(lstar) <=  int(hstar)):
+            if(float(lstar) <=  float(hstar)):
                 if(int(minroom) <= int(maxroom)):
                     if(int(minbthm) <= int(maxbthm)):
                         conn = sqlite3.connect(os.path.join('RMHS.db'))
@@ -64,17 +70,39 @@ def searchQ(request):
                         ayear = int(ayear)
                         byear = int(byear)
 
-                        lstar = int(lstar)
-                        hstar = int(hstar)
+                        lstar = float(lstar)
+                        hstar = float(hstar)
 
                         minroom = int(minroom)
                         maxroom = int(maxroom)
 
                         minbthm = int(minbthm)
                         maxbthm = int(maxbthm)
+                        #dic = {}       //adding avg to dic
+
+                        #for row in c.execute("SELECT avg(rv_rating), r_realtorKey FROM Realtor, Reviews WHERE rv_realtorkey = r_realtorKey GROUP BY r_realtorKey"):
+                        #    dic[row[1]] = row[0]
+                        #for row in dic:
+                        #    print(dic[row])
 
                         count = 0
-                        for row in c.execute('SELECT distinct h_housekey,p_name FROM House as H, Pictures Where p_name in (SELECT p_name FROM House, Pictures, Realtor, Manages, Reviews WHERE H.h_housekey = h_housekey and h_housekey = p_houseKey and r_realtorKey = m_realtor and r_realtorKey = rv_realtorkey and m_housekey = h_housekey and h_price >= ? and h_price <= ? and h_constructionyear >= ? and h_constructionyear <= ? and rv_rating >= ? and rv_rating <= ? and h_numRooms >= ? and h_numRooms <= ? and h_numBath >= ? and h_numBath <= ? LIMIT 1)',(minPrice,maxPrice,ayear, byear, lstar, hstar, minroom, maxroom, minbthm, maxbthm)):
+                        html = "<a style=\"text-align: right; align: right; float: right;\" href=\"../home/\">Home</a>"
+                        for row in c.execute('SELECT distinct h_housekey,p_name FROM House as H, Pictures ' +
+                                            'Where p_name in (SELECT p_name ' +
+                                                            'FROM House, Pictures, Realtor, Manages, Reviews ' +
+                                                            'WHERE H.h_housekey = h_housekey and ' +
+                                                            'h_housekey = p_houseKey and r_realtorKey = m_realtor ' +
+                                                            'and r_realtorKey = rv_realtorkey and m_housekey = h_housekey ' +
+                                                            'and h_price >= ? and h_price <= ? and h_constructionyear >= ? ' +
+                                                            'and h_constructionyear <= ? and ? <= (SELECT avg(rv2.rv_rating) ' +
+                                                                'FROM Reviews as rv2 ' +
+                                                                'WHERE rv2.rv_realtorkey = r_realtorKey) ' +
+                                                            'and ? >= (SELECT avg(rv2.rv_rating) ' +
+                                                                    'FROM Reviews as rv2 ' +
+                                                                    'WHERE rv2.rv_realtorkey = r_realtorKey) ' +
+                                                            'and h_numRooms >= ? and h_numRooms <= ? ' +
+                                                            'and h_numBath >= ? and ' +
+                                                            'h_numBath <= ? LIMIT 1)',(minPrice,maxPrice,ayear, byear, lstar, hstar, minroom, maxroom, minbthm, maxbthm)):
                             html += "<a href=../home/ViewHouse?h_housekey=" + str(row[0]) + "><img src = \""+ str(row[1]) +"\" height=\"50\" width=\"50\" </img><br></a>"
                             count += 1
 

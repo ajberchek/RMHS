@@ -78,8 +78,9 @@ def showRealtor(request):
                 print(avgRev)
                 avgRev = -1
             else:
+                realtorCursor.execute('SELECT avg(rv_rating) FROM Reviews WHERE rv_realtorkey=? AND rv_rating > -1',(realtorKey,))
+                avgRev = realtorCursor.fetchone()[0]
                 print(avgRev)
-                avgRev = avgRev[0]
                 if(avgRev is None):
                     avgRev = -1
 
@@ -297,6 +298,7 @@ def createRealtor(request):
         if('type' in request.session and request.session.get('type') == 'R'):
             conn = sqlite3.connect('RMHS.db')
             realtorCursor = conn.cursor()
+            revCursor = conn.cursor()
 
             try:
                 RealtorName = request.POST.get('RealtorName',None)
@@ -315,7 +317,14 @@ def createRealtor(request):
                     #Realtor exists already
                     return Http404("<h6>User is already in charge of a realtor, or realtor name is taken, go back and try again</h6>")
 
-                
+                revCursor.execute('SELECT max(rv_reviewkey) FROM Reviews')
+                (ReviewKey) = revCursor.fetchone()
+                if(ReviewKey is None):
+                    ReviewKey = 0
+                else:
+                    ReviewKey = ReviewKey[0] + 1
+
+                revCursor.execute('INSERT INTO Reviews VALUES(?,?,?,?,?)',(ReviewKey,RealtorName,'ADMIN',-1,'Workaround and wont affect avg rating'))
                 realtorCursor.execute('INSERT INTO Realtor VALUES(?,?,?,?,?,?)',(RealtorName,CredentialKey,Description,Location,numSoldHouses,ContactInfo))
 
                 conn.commit()

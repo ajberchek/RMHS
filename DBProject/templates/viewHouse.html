@@ -5,7 +5,7 @@
 </div>
 <div>
 	<h1>
-		Edit House: {{ house_id }}
+		House: {{ Address }}
 	</h1>
 </div>
 <ul>
@@ -53,3 +53,13 @@
 <br>
 <h4>Location: {{ Location }}</h4>
 <br>
+{% if provider_list|length > 0 %}
+	<h5>Services That Can Be Provided For This House:</h5>
+	<ol>
+	{% for SP in provider_list %}
+		<li>
+		<a href="../../ServiceProvider/ViewService?s_providerKey={{ SP.key }}">{{ SP.Description }}</a>
+		</li>
+	{% endfor %}
+	</ol>
+{% endif %}

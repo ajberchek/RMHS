@@ -35,7 +35,13 @@ def createAccount(request):
                     request.session['uname'] = uname
                     request.session['type'] = typeChoice
                     conn.close()
-                    return HttpResponseRedirect("../../Realtor/CreateRealtor")
+                    if(typeChoice == 'R'):
+                        return HttpResponseRedirect("../../Realtor/CreateRealtor")
+                    if(typeChoice == 'S'):
+                        return HttpResponseRedirect("../../ServiceProvider/CreateServiceProvider")
+                    if(typeChoice == 'U'):
+                        return HttpResponseRedirect("../../home")
+                    return Http404("")
 
             conn.close()
             

@@ -5,6 +5,11 @@
 </div>
 
 <h4>Realtor: {{ RealtorKey }}</h4>
+{% if avgRev == -1 %}
+	<h4>Realtor doesn't have any reviews yet</h4>
+{% else %}
+	<h4>Realtor Average Rating: {{ avgRev }}</h4>
+{% endif %}
 <h4>Description: {{ Description }}</h4>
 <h4>Location: {{ Location }}</h4>
 <h4>Contact Info: {{ ContactInfo }}</h4>

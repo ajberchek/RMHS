@@ -15,9 +15,9 @@ def logout(request):
                 html = "<h1>Successfully Logged Out " + str(request.session.get('uname')) + "</h1>"
                 request.session.delete('uname')
 
-            return HttpResponseRedirect("../SignIn")
+            return HttpResponseRedirect("../home")
         except:
             #redirect back to index if possible
-            return HttpResponseRedirect("../SignIn")
+            return HttpResponseRedirect("../home")
     else:
-            return HttpResponseRedirect("../SignIn")
+            return HttpResponseRedirect("../home")

@@ -69,8 +69,24 @@ def showRealtor(request):
             Description = realtor[2]
             Location = realtor[3]
             ContactInfo = realtor[5]
+
+            realtorCursor.execute('SELECT avg(rv_rating) FROM Reviews WHERE rv_realtorkey=?',(realtorKey,))
+            (avgRev) = realtorCursor.fetchone()
+            print(avgRev)
+            print("ha")
+            if(avgRev is None):
+                print(avgRev)
+                avgRev = -1
+            else:
+                print(avgRev)
+                avgRev = avgRev[0]
+                if(avgRev is None):
+                    avgRev = -1
+
+            print(avgRev)
+
             conn.close()
-            cont = {'RealtorKey':realtorKey,'Description':Description,'Location':Location,'ContactInfo':ContactInfo}
+            cont = {'RealtorKey':realtorKey,'Description':Description,'Location':Location,'ContactInfo':ContactInfo,'avgRev':avgRev}
             return render(context=cont,request=request,template_name='DisplayRealtor.html')
 
     return Http404("Invalid Realtor Key")

@@ -11,6 +11,11 @@ class House:
             self.ID = houseID
             self.thumbnail = mainPicURL
 
+class SP:
+    def __init__(self,key,Description):
+        self.key = key
+        self.Description = Description
+
 def viewHome(request):
     if('uname' in request.session):
         html = "<form method=\"GET\" action=\"../rsearch/\">"
@@ -21,9 +26,11 @@ def viewHome(request):
 def viewHouse(request):
     if request.method == 'GET':
         picUrlList = []
+        spList = []
         conn = sqlite3.connect('RMHS.db')
         houseCursor = conn.cursor()
         picCursor = conn.cursor()
+        spCursor = conn.cursor()
 
         try:
             houseKey = request.GET.get('h_housekey',None)
@@ -31,6 +38,10 @@ def viewHouse(request):
                 picUrlList.append(row[0])
             houseCursor.execute('SELECT * FROM House WHERE h_housekey = ?',(houseKey,))
             row = houseCursor.fetchone()
+
+            for sp in spCursor.execute('SELECT s_providerKey,s_name,s_serviceType FROM Services,ServiceProvider WHERE sv_providerkey = s_providerKey AND sv_housekey=?',(houseKey,)):
+                toInsert = SP(str(sp[0]),str(sp[1]) + ": " + str(sp[2]))
+                spList.append(toInsert)
 
             HouseKey = row[0]
             ConstructionYear = row[1]
@@ -50,7 +61,8 @@ def viewHouse(request):
             print(houseKey)
             print(HouseKey)
 
-            cont = {'house_id':houseKey,'Pictures':picUrlList,'HouseKey':HouseKey,'ConstructionYear':ConstructionYear,'PetFriendly':PetFriendly,'NumRooms':NumRooms,'NumBath':NumBath,'HouseSize':HouseSize,'Appliances':Appliances,'SellStatus':SellStatus,'Price':Price,'Garage':Garage,'Description':Description,'AdditionalInfo':AdditionalInfo,'Address':Address,'Location':Location}
+            cont = {'provider_list':spList,'house_id':houseKey,'Pictures':picUrlList,'HouseKey':HouseKey,'ConstructionYear':ConstructionYear,'PetFriendly':PetFriendly,'NumRooms':NumRooms,'NumBath':NumBath,'HouseSize':HouseSize,'Appliances':Appliances,'SellStatus':SellStatus,'Price':Price,'Garage':Garage,'Description':Description,'AdditionalInfo':AdditionalInfo,'Address':Address,'Location':Location}
             return render(context=cont,request=request,template_name='viewHouse.html')
-        except:
+        except Exception as e:
+            print(e)
             raise Http404()

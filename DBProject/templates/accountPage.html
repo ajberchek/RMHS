@@ -6,12 +6,15 @@
 </div>
 <div>
 	<h1>
-		Account Page for {{ realtorName }}
+		Account Page for {{ Name }}
 	</h1>
 </div>
 <div>
 	<h3><a href="EditAccount/">Edit Account</a></h3>
 	{% if utype == "R" %}
 		<h3><a href="../Realtor/Houses/">Houses</a></h3>
+	{% elif utype == "S" %}
+		<h3><a href="../ServiceProvider/ViewServices?s_credentialKey={{ Name }}">Services</a></h3>
 	{% endif %}
+
 </div>

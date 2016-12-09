@@ -7,7 +7,7 @@ import sqlite3
 import os
 
 def accountPage(request):
-    cont = {'realtorName':request.session.get('uname',None),'utype':request.session.get('type',None)}
+    cont = {'Name':request.session.get('uname',None),'utype':request.session.get('type',None)}
     return render(context=cont,request=request,template_name='accountPage.html')
 
 def editAccount(request):

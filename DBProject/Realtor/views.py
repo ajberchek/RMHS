@@ -90,7 +90,7 @@ def showRealtor(request):
             cont = {'RealtorKey':realtorKey,'Description':Description,'Location':Location,'ContactInfo':ContactInfo,'avgRev':avgRev}
             return render(context=cont,request=request,template_name='DisplayRealtor.html')
 
-    return Http404("Invalid Realtor Key")
+    raise Http404("Invalid Realtor Key")
 
 def allRealtors(request):
     listOfRealtors = []
@@ -359,7 +359,7 @@ def createRealtor(request):
                 realtorCursor.execute('SELECT * FROM Realtor WHERE r_realtorKey=? OR r_credentialKey=?',(RealtorName,CredentialKey))
                 if(realtorCursor.fetchone() is not None):
                     #Realtor exists already
-                    return Http404("<h6>User is already in charge of a realtor, or realtor name is taken, go back and try again</h6>")
+                    raise Http404("<h6>User is already in charge of a realtor, or realtor name is taken, go back and try again</h6>")
 
                 revCursor.execute('SELECT max(rv_reviewkey) FROM Reviews')
                 (ReviewKey) = revCursor.fetchone()
